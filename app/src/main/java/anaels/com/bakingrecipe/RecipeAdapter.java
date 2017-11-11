@@ -14,6 +14,9 @@ import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.api.model.Recipe;
 
+/**
+ * Display the recipe on the main activity
+ */
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
     private ArrayList<Recipe> listRecipe;
     private Activity mActivity;
@@ -40,8 +43,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        //Text
         viewHolder.titleRecipeTextView.setText(listRecipe.get(i).getName());
         viewHolder.servingRecipeTextView.setText(String.valueOf(listRecipe.get(i).getServings()));
+        //Image
         if (listRecipe.get(i).getImage() != null && !listRecipe.get(i).getImage().isEmpty()) {
             Picasso.with(mActivity).load(listRecipe.get(i).getImage()).into(viewHolder.recipeImageView);
         }

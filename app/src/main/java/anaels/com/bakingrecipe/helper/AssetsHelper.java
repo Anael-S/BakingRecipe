@@ -19,6 +19,8 @@ import java.io.OutputStream;
  */
 public class AssetsHelper {
 
+    public static final String PATH_FILE_RECIPES = "recipe.json";
+
     /**
      * Read a file from the assets folder and return its content
      *

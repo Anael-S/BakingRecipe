@@ -22,15 +22,18 @@ import anaels.com.bakingrecipe.helper.SerializeHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Main activity, display the list of recipes
+ */
 public class HomeActivity extends AppCompatActivity {
 
     ArrayList<Recipe> mRecipeList;
     RecipeAdapter mRecipeAdapter;
     Context mContext;
 
-    private final String PATH_FILE_RECIPES = "recipe.json";
-
     private final String KEY_INTENT_RECIPE = "keyIntentRecipe";
+    private final String KEY_INTENT_LIST_RECIPE = "keyIntentRecipeList";
+
 
     @BindView(R.id.recyclerViewRecipes)
     RecyclerView recyclerViewRecipes;
@@ -42,9 +45,27 @@ public class HomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
 
-        loadRecipes();
+        //If we already got our recipe lists, we recover them
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            mRecipeList = savedInstanceState.getParcelableArrayList(KEY_INTENT_LIST_RECIPE);
+            initRecyclerView();
+        } else {
+            loadRecipes();
+        }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(KEY_INTENT_LIST_RECIPE, mRecipeList);
+        super.onSaveInstanceState(outState);
+    }
+
+
+    /**
+     * Load the recipes fron internet if we have an internet connection
+     * Load them fron a local json file otherwise
+     */
     private void loadRecipes() {
         //If we have an internet connection
         if (InternetConnectionHelper.isNetworkAvailable(this)) {
@@ -65,11 +86,13 @@ public class HomeActivity extends AppCompatActivity {
             //otherwise we fetch them locally
             loadRecipeFromLocalFile();
         }
-
     }
 
+    /**
+     * Load the recipe from the local json file
+     */
     private void loadRecipeFromLocalFile() {
-        String jsonRecipes = AssetsHelper.readJsonFileFromAssets(PATH_FILE_RECIPES, mContext);
+        String jsonRecipes = AssetsHelper.readJsonFileFromAssets(AssetsHelper.PATH_FILE_RECIPES, mContext);
         Type returnType = new TypeToken<ArrayList<Recipe>>() {
         }.getType();
         ArrayList<Recipe> recipeList = SerializeHelper.deserializeJson(jsonRecipes, returnType);
@@ -81,8 +104,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
-    private void initRecyclerView(){
+    /**
+     * Initialize the recyclerview and his adapter
+     */
+    private void initRecyclerView() {
         recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
         if (mRecipeAdapter == null) {
             mRecipeAdapter = new RecipeAdapter(this, mRecipeList, new RecipeAdapter.OnItemClickListener() {
@@ -95,10 +120,10 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
             recyclerViewRecipes.setAdapter(mRecipeAdapter);
-        }else {
+        } else {
             //We update the adapter
-            //TODO
+            mRecipeAdapter.setListRecipe(mRecipeList);
+            mRecipeAdapter.notifyDataSetChanged();
         }
-
     }
 }
