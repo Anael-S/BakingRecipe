@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BakingRecipe</string>
+
+    <string name="error_fetch_recipe">An error occured, try again.</string>
 </resources>
