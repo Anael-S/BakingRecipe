@@ -115,6 +115,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onItemClick(Recipe item) {
                     Intent i = new Intent(mContext, RecipeActivity.class);
                     i.putExtra(KEY_INTENT_RECIPE, item);
+                    i.putExtra(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
                     startActivity(i);
                 }
             });

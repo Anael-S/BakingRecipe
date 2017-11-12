@@ -23,8 +23,10 @@ public class RecipeActivity extends AppCompatActivity {
 
     Recipe mRecipe;
     Context mContext;
+    ArrayList<Recipe> mRecipeList;
 
     public static final String KEY_INTENT_STEP = "keyIntentStep";
+    public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
     public static final String KEY_INTENT_RECIPE_NAME = "keyIntentRecipeName";
 
 
@@ -45,6 +47,7 @@ public class RecipeActivity extends AppCompatActivity {
         mContext = this;
 
         mRecipe = getIntent().getParcelableExtra(HomeActivity.KEY_INTENT_RECIPE);
+        mRecipeList = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_RECIPE);
 
         if (savedInstanceState != null && mRecipe == null) {
             mRecipe = savedInstanceState.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
@@ -92,6 +95,7 @@ public class RecipeActivity extends AppCompatActivity {
                     Intent i = new Intent(mContext, StepActivity.class);
                     i.putExtra(KEY_INTENT_STEP, item);
                     i.putExtra(KEY_INTENT_RECIPE_NAME, mRecipe.getName());
+                    i.putExtra(KEY_INTENT_STEP_LIST, new ArrayList<>(mRecipe.getSteps()));
                     startActivity(i);
                 }
             });

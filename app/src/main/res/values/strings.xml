@@ -8,6 +8,8 @@
     <string name="ingredient_name">%1$s:</string>
 
     <string name="step_number">Step %1$s:</string>
+    <string name="next_step">Next</string>
+    <string name="previous_step">Previous</string>
 
     <string name="instructions">Instructions:</string>
     <string name="ingredients">Ingredients:</string>
