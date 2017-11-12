@@ -122,7 +122,7 @@ public class StepActivity extends AppCompatActivity {
         //Detail step
         mPagerAdapter = new DetailStepRecipePagerAdapter(getSupportFragmentManager(), mStepList);
         pagerDetailStep.setAdapter(mPagerAdapter);
-        pagerDetailStep.setPageTransformer(false, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.SLIDE_OVER));
+        pagerDetailStep.setPageTransformer(false, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
         tabDots.setupWithViewPager(pagerDetailStep, true);
 
     }
