@@ -1,4 +1,4 @@
-package anaels.com.bakingrecipe;
+package anaels.com.bakingrecipe.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import anaels.com.bakingrecipe.R;
 import anaels.com.bakingrecipe.api.model.Recipe;
 
 /**

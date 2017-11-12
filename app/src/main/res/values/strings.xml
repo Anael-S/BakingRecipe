@@ -11,4 +11,11 @@
 
     <string name="instructions">Instructions:</string>
     <string name="ingredients">Ingredients:</string>
+
+    <string name="retry">retry</string>
+
+    <string name="step_separator">%1$s - Step %2$s</string>
+    <string name="recipe_name_separator">%1$s - Introduction</string>
+
+    <string name="unknown_error">An unknown error occured, try again.</string>
 </resources>

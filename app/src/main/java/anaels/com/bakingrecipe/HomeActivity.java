@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.reflect.TypeToken;
@@ -14,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import anaels.com.bakingrecipe.adapter.RecipeAdapter;
 import anaels.com.bakingrecipe.api.NetworkService;
 import anaels.com.bakingrecipe.api.model.Recipe;
 import anaels.com.bakingrecipe.helper.AssetsHelper;

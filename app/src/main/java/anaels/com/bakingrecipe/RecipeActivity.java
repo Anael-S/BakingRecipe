@@ -1,15 +1,18 @@
 package anaels.com.bakingrecipe;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import anaels.com.bakingrecipe.adapter.RecipeIngredientAdapter;
+import anaels.com.bakingrecipe.adapter.RecipeStepAdapter;
 import anaels.com.bakingrecipe.api.model.Recipe;
+import anaels.com.bakingrecipe.api.model.Step;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -20,6 +23,10 @@ public class RecipeActivity extends AppCompatActivity {
 
     Recipe mRecipe;
     Context mContext;
+
+    public static final String KEY_INTENT_STEP = "keyIntentStep";
+    public static final String KEY_INTENT_RECIPE_NAME = "keyIntentRecipeName";
+
 
     //UI
     @BindView(R.id.recyclerViewIngredientsRecipes)
@@ -55,7 +62,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipe);
+        outState.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
         super.onSaveInstanceState(outState);
     }
 
@@ -79,7 +86,15 @@ public class RecipeActivity extends AppCompatActivity {
     private void initRecyclerViewStep() {
         recyclerViewStepRecipes.setLayoutManager(new LinearLayoutManager(this));
         if (mRecipeStepAdapter == null) {
-            mRecipeStepAdapter = new RecipeStepAdapter(this, new ArrayList<>(mRecipe.getSteps()));
+            mRecipeStepAdapter = new RecipeStepAdapter(this, new ArrayList<>(mRecipe.getSteps()), new RecipeStepAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Step item) {
+                    Intent i = new Intent(mContext, StepActivity.class);
+                    i.putExtra(KEY_INTENT_STEP, item);
+                    i.putExtra(KEY_INTENT_RECIPE_NAME, mRecipe.getName());
+                    startActivity(i);
+                }
+            });
             recyclerViewStepRecipes.setAdapter(mRecipeStepAdapter);
         } else {
             mRecipeStepAdapter.setListStep(new ArrayList<>(mRecipe.getSteps()));
