@@ -58,7 +58,7 @@ public class DetailStepRecipeFragment extends Fragment {
         ButterKnife.bind(this,rootView);
 
         bandwidthMeter = new DefaultBandwidthMeter();
-        mediaDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "mediaPlayerSample"), (TransferListener<? super DataSource>) bandwidthMeter);
+        mediaDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "mediaPlayerBakingRecipe"), (TransferListener<? super DataSource>) bandwidthMeter);
 
 
         Bundle bundle = this.getArguments();
@@ -95,9 +95,8 @@ public class DetailStepRecipeFragment extends Fragment {
         player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
         videoPlayer.setPlayer(player);
         player.setPlayWhenReady(false);
-        DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(mStep.getVideoURL()),
-                mediaDataSourceFactory, extractorsFactory, null, null);
+                mediaDataSourceFactory, new DefaultExtractorsFactory(), null, null);
         player.prepare(mediaSource);
     }
 
