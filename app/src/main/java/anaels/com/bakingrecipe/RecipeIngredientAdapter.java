@@ -5,31 +5,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.api.model.Ingredient;
-import anaels.com.bakingrecipe.api.model.Recipe;
 
 /**
  * Display the ingredient on recipe activity
  */
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
+public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredientAdapter.ViewHolder> {
     private ArrayList<Ingredient> listIngredient;
     private Activity mActivity;
 
 
-    public IngredientAdapter(Activity activity, ArrayList<Ingredient> listIngredient) {
+    public RecipeIngredientAdapter(Activity activity, ArrayList<Ingredient> listIngredient) {
         this.mActivity = activity;
         this.listIngredient = listIngredient;
     }
 
     @Override
-    public IngredientAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RecipeIngredientAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_ingredient, viewGroup, false);
         return new ViewHolder(view);
     }
@@ -37,7 +33,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         //Text
-        viewHolder.nameIngredientTextView.setText(listIngredient.get(i).getIngredient());
+        viewHolder.nameIngredientTextView.setText(mActivity.getString(R.string.ingredient_name, listIngredient.get(i).getIngredient()));
         viewHolder.quantityIngredientTextView.setText(String.valueOf(String.valueOf(listIngredient.get(i).getQuantity())));
         viewHolder.measureIngredientTextView.setText(listIngredient.get(i).getMeasure().toLowerCase());
     }

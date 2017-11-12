@@ -22,14 +22,13 @@ public class RecipeActivity extends AppCompatActivity {
     Context mContext;
 
     //UI
-    @BindView(R.id.titleRecipeTextView)
-    TextView titleRecipeTextView;
     @BindView(R.id.recyclerViewIngredientsRecipes)
     RecyclerView recyclerViewIngredientsRecipes;
     @BindView(R.id.recyclerViewStepRecipes)
     RecyclerView recyclerViewStepRecipes;
 
-    IngredientAdapter mIngredientAdapter;
+    RecipeIngredientAdapter mRecipeIngredientAdapter;
+    RecipeStepAdapter mRecipeStepAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +44,13 @@ public class RecipeActivity extends AppCompatActivity {
         }
 
         //UI
-        titleRecipeTextView.setText(mRecipe.getName());
-        initRecyclerViewIngredient();
+        if (mRecipe != null) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(mRecipe.getName());
+            }
+            initRecyclerViewIngredient();
+            initRecyclerViewStep();
+        }
     }
 
     @Override
@@ -60,13 +64,26 @@ public class RecipeActivity extends AppCompatActivity {
      */
     private void initRecyclerViewIngredient() {
         recyclerViewIngredientsRecipes.setLayoutManager(new LinearLayoutManager(this));
-        if (mIngredientAdapter == null) {
-            mIngredientAdapter = new IngredientAdapter(this, new ArrayList<>(mRecipe.getIngredients()));
-            recyclerViewIngredientsRecipes.setAdapter(mIngredientAdapter);
+        if (mRecipeIngredientAdapter == null) {
+            mRecipeIngredientAdapter = new RecipeIngredientAdapter(this, new ArrayList<>(mRecipe.getIngredients()));
+            recyclerViewIngredientsRecipes.setAdapter(mRecipeIngredientAdapter);
         } else {
-            //We update the adapter
-            mIngredientAdapter.setListIngredient(new ArrayList<>(mRecipe.getIngredients()));
-            mIngredientAdapter.notifyDataSetChanged();
+            mRecipeIngredientAdapter.setListIngredient(new ArrayList<>(mRecipe.getIngredients()));
+            mRecipeIngredientAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * Initialize the recyclerview for the steps and his adapter
+     */
+    private void initRecyclerViewStep() {
+        recyclerViewStepRecipes.setLayoutManager(new LinearLayoutManager(this));
+        if (mRecipeStepAdapter == null) {
+            mRecipeStepAdapter = new RecipeStepAdapter(this, new ArrayList<>(mRecipe.getSteps()));
+            recyclerViewStepRecipes.setAdapter(mRecipeStepAdapter);
+        } else {
+            mRecipeStepAdapter.setListStep(new ArrayList<>(mRecipe.getSteps()));
+            mRecipeStepAdapter.notifyDataSetChanged();
         }
     }
 

@@ -13,6 +13,7 @@
     <dimen name="medium_padding">12dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="extra_small_padding">4dp</dimen>
+    <dimen name="extra_extra_small_padding">2dp</dimen>
 
     <dimen name="view_ingredient_height">100dp</dimen>
 
