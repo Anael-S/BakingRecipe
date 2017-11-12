@@ -31,8 +31,8 @@ public class HomeActivity extends AppCompatActivity {
     RecipeAdapter mRecipeAdapter;
     Context mContext;
 
-    private final String KEY_INTENT_RECIPE = "keyIntentRecipe";
-    private final String KEY_INTENT_LIST_RECIPE = "keyIntentRecipeList";
+    public static final String KEY_INTENT_RECIPE = "keyIntentRecipe";
+    public static final String KEY_INTENT_LIST_RECIPE = "keyIntentRecipeList";
 
 
     @BindView(R.id.recyclerViewRecipes)
@@ -113,10 +113,9 @@ public class HomeActivity extends AppCompatActivity {
             mRecipeAdapter = new RecipeAdapter(this, mRecipeList, new RecipeAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Recipe item) {
-                    //TODO
-//                    Intent i = new Intent(mContext, RecipeActivity.class);
-//                    i.putExtra(KEY_INTENT_RECIPE, item);
-//                    startActivity(i);
+                    Intent i = new Intent(mContext, RecipeActivity.class);
+                    i.putExtra(KEY_INTENT_RECIPE, item);
+                    startActivity(i);
                 }
             });
             recyclerViewRecipes.setAdapter(mRecipeAdapter);

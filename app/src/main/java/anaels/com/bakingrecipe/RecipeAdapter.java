@@ -48,7 +48,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         viewHolder.servingRecipeTextView.setText(String.valueOf(listRecipe.get(i).getServings()));
         //Image
         if (listRecipe.get(i).getImage() != null && !listRecipe.get(i).getImage().isEmpty()) {
-            Picasso.with(mActivity).load(listRecipe.get(i).getImage()).into(viewHolder.recipeImageView);
+            Picasso.with(mActivity).load(listRecipe.get(i).getImage()).error(R.drawable.placeholder_recipe).into(viewHolder.recipeImageView);
         }
     }
 

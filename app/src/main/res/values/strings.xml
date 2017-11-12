@@ -4,4 +4,6 @@
     <string name="error_fetch_recipe">An error occured, try again.</string>
 
     <string name="servings">The number of people that this dish can serve</string>
+
+    <string name="ingredient_name">%1$s/:</string>
 </resources>
