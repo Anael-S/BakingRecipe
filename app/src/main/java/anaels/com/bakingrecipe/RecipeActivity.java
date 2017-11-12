@@ -1,19 +1,12 @@
 package anaels.com.bakingrecipe;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import anaels.com.bakingrecipe.adapter.RecipeIngredientAdapter;
-import anaels.com.bakingrecipe.adapter.RecipeStepAdapter;
 import anaels.com.bakingrecipe.api.model.Recipe;
-import anaels.com.bakingrecipe.api.model.Step;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
