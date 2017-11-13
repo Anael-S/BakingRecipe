@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 /**
  * Fragment used to display a single step from the work order feature
  */
-public class DetailStepRecipeFragment extends Fragment {
+public class StepFragment extends Fragment {
 
     Step mStep;
     ArrayList<Step> mStepList;

@@ -10,7 +10,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import anaels.com.bakingrecipe.adapter.DetailStepRecipePagerAdapter;
+import anaels.com.bakingrecipe.adapter.StepPagerAdapter;
 import anaels.com.bakingrecipe.animations.ReaderViewPagerTransformer;
 import anaels.com.bakingrecipe.api.model.Step;
 import butterknife.BindView;
@@ -26,7 +26,7 @@ public class StepActivity extends AppCompatActivity {
     String mRecipeName;
     Context mContext;
 
-    DetailStepRecipePagerAdapter mPagerAdapter;
+    StepPagerAdapter mPagerAdapter;
 
     //Footer
     @BindView(R.id.layoutPreviousStep)
@@ -37,8 +37,6 @@ public class StepActivity extends AppCompatActivity {
     ViewPager pagerDetailStep;
     @BindView(R.id.tabDots)
     TabLayout tabDots;
-
-
 
 
     @Override
@@ -89,7 +87,7 @@ public class StepActivity extends AppCompatActivity {
         });
 
         //Detail step
-        mPagerAdapter = new DetailStepRecipePagerAdapter(getSupportFragmentManager(), mStepList);
+        mPagerAdapter = new StepPagerAdapter(getSupportFragmentManager(), mStepList);
         pagerDetailStep.setAdapter(mPagerAdapter);
         pagerDetailStep.setPageTransformer(false, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
         tabDots.setupWithViewPager(pagerDetailStep, true);

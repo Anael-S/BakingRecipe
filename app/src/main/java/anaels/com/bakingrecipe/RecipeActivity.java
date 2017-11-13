@@ -2,11 +2,15 @@ package anaels.com.bakingrecipe;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.api.model.Recipe;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -21,6 +25,10 @@ public class RecipeActivity extends AppCompatActivity {
     public static final String KEY_INTENT_STEP = "keyIntentStep";
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
     public static final String KEY_INTENT_RECIPE_NAME = "keyIntentRecipeName";
+
+    @Nullable
+    @BindView(R.id.fragmentStep)
+    FrameLayout fragmentStep;
 
 
     @Override
@@ -49,10 +57,20 @@ public class RecipeActivity extends AppCompatActivity {
         bundle.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
         bundle.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
         fragmentRecipe.setArguments(bundle);
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragmentRecipe, fragmentRecipe, fragmentRecipe.getClass().getSimpleName()).addToBackStack(null).commit();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentRecipe, fragmentRecipe).commit();
+
+        //If we're on a tablet
+        if(fragmentStep != null){
+            StepFragment fragmentStep = new StepFragment();
+            bundle = new Bundle();
+            bundle.putParcelable(RecipeActivity.KEY_INTENT_STEP, mRecipe.getSteps().get(0));
+            bundle.putParcelableArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, new ArrayList<Parcelable>(mRecipe.getSteps()));
+            fragmentStep.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentStep, fragmentStep).commit();
+        }
+
 
     }
 
