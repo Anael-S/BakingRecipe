@@ -13,8 +13,10 @@
     <TextView
         android:id="@+id/instructionTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/videoPlayer"
+        android:layout_centerInParent="true"
+        android:gravity="center"
         android:padding="@dimen/small_padding"
         android:text="@string/step_number"
         android:textStyle="bold" />

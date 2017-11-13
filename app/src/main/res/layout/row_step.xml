@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_below="@+id/titleRecipeTextView"
     android:layout_margin="@dimen/card_margin"
-    android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="@dimen/card_corner"
     app:cardElevation="@dimen/small_card_elevation">
 

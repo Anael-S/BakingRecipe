@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
@@ -108,7 +109,12 @@ public class HomeActivity extends AppCompatActivity {
      * Initialize the recyclerview and his adapter
      */
     private void initRecyclerView() {
-        recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewRecipes.setHasFixedSize(true);
+        if (getResources().getBoolean(R.bool.isTablet)){
+            recyclerViewRecipes.setLayoutManager(new GridLayoutManager(this, 3));
+        } else {
+            recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
+        }
         if (mRecipeAdapter == null) {
             mRecipeAdapter = new RecipeAdapter(this, mRecipeList, new RecipeAdapter.OnItemClickListener() {
                 @Override

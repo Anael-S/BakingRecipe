@@ -25,6 +25,16 @@ public class Step implements Parcelable {
     @Expose
     private String thumbnailURL;
 
+    private boolean isSelected = false;
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public Integer getId() {
         return id;
     }
