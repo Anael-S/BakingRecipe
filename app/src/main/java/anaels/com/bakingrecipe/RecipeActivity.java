@@ -32,6 +32,9 @@ public class RecipeActivity extends AppCompatActivity {
     @BindView(R.id.fragmentStep)
     FrameLayout fragmentStep;
 
+    RecipeFragment fragmentRecipe;
+    int positionIngredientList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +42,14 @@ public class RecipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe);
         ButterKnife.bind(this);
         mContext = this;
+        positionIngredientList = 0;
 
         mRecipe = getIntent().getParcelableExtra(HomeActivity.KEY_INTENT_RECIPE);
         mRecipeList = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_RECIPE);
 
-        if (savedInstanceState != null && mRecipe == null) {
+        if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
+            positionIngredientList =  savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST);
         }
 
         //UI
@@ -54,10 +59,11 @@ public class RecipeActivity extends AppCompatActivity {
             }
         }
 
-        RecipeFragment fragmentRecipe = new RecipeFragment();
+        fragmentRecipe = new RecipeFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
         bundle.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
+        bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
         fragmentRecipe.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentRecipe, fragmentRecipe).commit();
@@ -83,6 +89,7 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
+        outState.putInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, fragmentRecipe.getPositionIngredientList());
         super.onSaveInstanceState(outState);
     }
 

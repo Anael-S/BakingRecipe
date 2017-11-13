@@ -7,12 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.R;
 import anaels.com.bakingrecipe.api.model.Ingredient;
-import anaels.com.bakingrecipe.helper.QuantityHelper;
+import anaels.com.bakingrecipe.helper.StepHelper;
 
 /**
  * Display the ingredient on recipe activity
@@ -37,7 +36,7 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         //Text
         viewHolder.nameIngredientTextView.setText(mActivity.getString(R.string.ingredient_name, listIngredient.get(i).getIngredient()));
-        viewHolder.quantityIngredientTextView.setText(QuantityHelper.formatForDisplay(listIngredient.get(i).getQuantity()));
+        viewHolder.quantityIngredientTextView.setText(StepHelper.formatQuantityForDisplay(listIngredient.get(i).getQuantity()));
         viewHolder.measureIngredientTextView.setText(listIngredient.get(i).getMeasure().toLowerCase());
         //Lowe bar
         if (i == listIngredient.size()-1){

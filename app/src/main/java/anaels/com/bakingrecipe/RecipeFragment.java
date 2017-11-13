@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ public class RecipeFragment extends Fragment {
     public static final String KEY_INTENT_STEP = "keyIntentStep";
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
     public static final String KEY_INTENT_RECIPE_NAME = "keyIntentRecipeName";
+    public static final String KEY_INTENT_POSITION_INGREDIENT_LIST = "keyIntentPositionIngredientList";
 
 
     //UI
@@ -43,12 +45,15 @@ public class RecipeFragment extends Fragment {
     RecipeIngredientAdapter mRecipeIngredientAdapter;
     RecipeStepAdapter mRecipeStepAdapter;
 
+    int positionIngredientList = 0;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, rootView);
+        Log.i("//RM","onCreateView RecipeFragment called twice???? //RM TODO FIX THIS");
         mContext = getContext();
 
         Bundle currentBundle = null;
@@ -61,6 +66,7 @@ public class RecipeFragment extends Fragment {
         if (currentBundle != null) {
             mRecipe = currentBundle.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
             mRecipeList = currentBundle.getParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE);
+            positionIngredientList = currentBundle.getInt(KEY_INTENT_POSITION_INGREDIENT_LIST);
         }
 
         //UI
@@ -76,6 +82,9 @@ public class RecipeFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
         outState.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
+        if (recyclerViewIngredientsRecipes != null) {
+            outState.putInt(KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -91,6 +100,16 @@ public class RecipeFragment extends Fragment {
             mRecipeIngredientAdapter.setListIngredient(new ArrayList<>(mRecipe.getIngredients()));
             mRecipeIngredientAdapter.notifyDataSetChanged();
         }
+        recyclerViewIngredientsRecipes.scrollToPosition(positionIngredientList);
+        recyclerViewIngredientsRecipes.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //We update the position of our scrollview
+                LinearLayoutManager myLayoutManager = (LinearLayoutManager) recyclerViewIngredientsRecipes.getLayoutManager();
+                positionIngredientList = myLayoutManager.findLastCompletelyVisibleItemPosition();
+            }
+        });
     }
 
     /**
@@ -102,10 +121,10 @@ public class RecipeFragment extends Fragment {
             mRecipeStepAdapter = new RecipeStepAdapter(getActivity(), new ArrayList<>(mRecipe.getSteps()), new RecipeStepAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Step item) {
-                    if (getActivity().getResources().getBoolean(R.bool.isTablet)){
+                    if (getActivity().getResources().getBoolean(R.bool.isTablet)) {
                         final StepFragment lFragment = new StepFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putParcelable(RecipeActivity.KEY_INTENT_STEP,item);
+                        bundle.putParcelable(RecipeActivity.KEY_INTENT_STEP, item);
                         bundle.putParcelableArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, new ArrayList<Parcelable>(mRecipe.getSteps()));
                         lFragment.setArguments(bundle);
                         getActivity().getSupportFragmentManager().beginTransaction()
@@ -126,5 +145,7 @@ public class RecipeFragment extends Fragment {
         }
     }
 
-
+    public int getPositionIngredientList() {
+        return positionIngredientList;
+    }
 }
