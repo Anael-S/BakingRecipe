@@ -1,0 +1,29 @@
+package anaels.com.bakingrecipe.helper;
+
+import java.util.ArrayList;
+
+import anaels.com.bakingrecipe.api.model.Step;
+
+/**
+ * Created by Anael on 11/13/2017.
+ */
+public class StepHelper {
+
+    public static int getSelectStepPosition(ArrayList<Step> listStep){
+        int lastSelectedStep=0;
+        boolean isStepSelected = false;
+        if (listStep != null) {
+            for (Step lStep : listStep) {
+                if (lStep != null && lStep.isSelected()) {
+                    isStepSelected = true;
+                    break;
+                }
+                lastSelectedStep++;
+            }
+            if (!isStepSelected) {
+                lastSelectedStep = 0;
+            }
+        }
+        return lastSelectedStep;
+    }
+}

@@ -28,7 +28,11 @@ public class Ingredient implements Parcelable {
     }
 
     public String getMeasure() {
-        return measure;
+        if (measure.equalsIgnoreCase("g")){
+            return "gram";
+        }else {
+            return measure;
+        }
     }
 
     public void setMeasure(String measure) {

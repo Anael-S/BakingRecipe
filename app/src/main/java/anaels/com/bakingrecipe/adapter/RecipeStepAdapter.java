@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.R;
 import anaels.com.bakingrecipe.api.model.Step;
+import anaels.com.bakingrecipe.helper.StepHelper;
 
 /**
  * Display the Step on recipe activity
@@ -20,7 +21,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
     private ArrayList<Step> listStep;
     private Activity mActivity;
     private final OnItemClickListener listener;
-    private int lastPosSelected = -1;
+    private int lastPosSelected = 0;
 
     private static final String RECIPE_INTRODUCTION_VIDEO = "Recipe Introduction";
 
@@ -32,6 +33,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
         this.mActivity = activity;
         this.listStep = listStep;
         this.listener = listener;
+        lastPosSelected = StepHelper.getSelectStepPosition(listStep);
     }
 
     @Override
@@ -43,14 +45,14 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         //Background
-        if (listStep.get(i).isSelected()){
+        if (listStep.get(i).isSelected()) {
             viewHolder.cardViewIngredientsRecipes.setBackgroundResource(R.drawable.card_highlighted);
         } else {
             viewHolder.cardViewIngredientsRecipes.setBackgroundResource(R.drawable.card_default);
         }
         //Text
         //If this is the introduction step, we dont display the step number
-        if (listStep.get(i).getDescription().equals(RECIPE_INTRODUCTION_VIDEO)){
+        if (listStep.get(i).getDescription().equals(RECIPE_INTRODUCTION_VIDEO)) {
             viewHolder.stepNumberTextView.setText("");
         } else {
             viewHolder.stepNumberTextView.setText(mActivity.getString(R.string.step_number, i));
@@ -81,16 +83,14 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
                 public void onClick(View v) {
                     final int position = getAdapterPosition();
                     if (listStep != null && position >= 0 && position <= listStep.size() - 1 && listStep.get(position) != null) {
+                        //We unselect the last one selected
+                        listStep.get(lastPosSelected).setSelected(false);
+                        notifyItemChanged(lastPosSelected);
                         //We select the view
                         listStep.get(position).setSelected(true);
                         notifyItemChanged(position);
-                        if(lastPosSelected != -1){
-                            //We unselect the last one selected
-                            listStep.get(lastPosSelected).setSelected(false);
-                            notifyItemChanged(lastPosSelected);
-                        }
                         //We update the last position
-                        lastPosSelected=position;
+                        lastPosSelected = position;
 
                         //We action the click
                         listener.onItemClick(listStep.get(position));

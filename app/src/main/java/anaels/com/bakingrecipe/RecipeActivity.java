@@ -10,6 +10,8 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.api.model.Recipe;
+import anaels.com.bakingrecipe.api.model.Step;
+import anaels.com.bakingrecipe.helper.StepHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -60,8 +62,12 @@ public class RecipeActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentRecipe, fragmentRecipe).commit();
 
+        int lastSelectedStep = StepHelper.getSelectStepPosition(new ArrayList<>(mRecipe.getSteps()));
+
         //If we're on a tablet
-        if(fragmentStep != null){
+        if (fragmentStep != null) {
+            //We select the first step
+            mRecipe.getSteps().get(lastSelectedStep).setSelected(true);
             StepFragment fragmentStep = new StepFragment();
             bundle = new Bundle();
             bundle.putParcelable(RecipeActivity.KEY_INTENT_STEP, mRecipe.getSteps().get(0));

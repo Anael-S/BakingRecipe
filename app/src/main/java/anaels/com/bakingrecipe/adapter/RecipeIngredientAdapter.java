@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.R;
 import anaels.com.bakingrecipe.api.model.Ingredient;
+import anaels.com.bakingrecipe.helper.QuantityHelper;
 
 /**
  * Display the ingredient on recipe activity
@@ -35,8 +37,14 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         //Text
         viewHolder.nameIngredientTextView.setText(mActivity.getString(R.string.ingredient_name, listIngredient.get(i).getIngredient()));
-        viewHolder.quantityIngredientTextView.setText(String.valueOf(String.valueOf(listIngredient.get(i).getQuantity())));
+        viewHolder.quantityIngredientTextView.setText(QuantityHelper.formatForDisplay(listIngredient.get(i).getQuantity()));
         viewHolder.measureIngredientTextView.setText(listIngredient.get(i).getMeasure().toLowerCase());
+        //Lowe bar
+        if (i == listIngredient.size()-1){
+            viewHolder.separatorView.setVisibility(View.GONE);
+        } else {
+            viewHolder.separatorView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -48,12 +56,14 @@ public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredie
         TextView nameIngredientTextView;
         TextView quantityIngredientTextView;
         TextView measureIngredientTextView;
+        View separatorView;
 
         public ViewHolder(View view) {
             super(view);
             nameIngredientTextView = (TextView) view.findViewById(R.id.nameIngredientTextView);
             quantityIngredientTextView = (TextView) view.findViewById(R.id.quantityIngredientTextView);
             measureIngredientTextView = (TextView) view.findViewById(R.id.measureIngredientTextView);
+            separatorView = view.findViewById(R.id.separatorView);
         }
     }
 
