@@ -11,6 +11,7 @@
     <dimen name="card_height">250dp</dimen>
     <dimen name="card_margin">8dp</dimen>
     <dimen name="card_elevation">12dp</dimen>
+    <dimen name="medium_card_elevation">8dp</dimen>
     <dimen name="small_card_elevation">6dp</dimen>
     <dimen name="extra_large_padding">20dp</dimen>
     <dimen name="large_padding">16dp</dimen>
