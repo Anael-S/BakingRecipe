@@ -114,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
     private void initRecyclerView() {
         recyclerViewRecipes.setHasFixedSize(true);
         if (getResources().getBoolean(R.bool.isTablet)){
-            recyclerViewRecipes.setLayoutManager(new GridLayoutManager(this, 3));
+            recyclerViewRecipes.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.number_column)));
         } else {
             recyclerViewRecipes.setLayoutManager(new LinearLayoutManager(this));
         }

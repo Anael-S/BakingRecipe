@@ -17,16 +17,21 @@
             android:layout_height="wrap_content"
             android:focusable="true" />
 
-        <TextView
-            android:id="@+id/instructionTextView"
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/videoPlayer"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:padding="@dimen/small_padding"
-            android:text="@string/step_number"
-            android:textStyle="bold" />
+            android:layout_below="@id/videoPlayer">
+
+            <TextView
+                android:id="@+id/instructionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/extra_small_padding"
+                android:gravity="center"
+                android:padding="@dimen/small_padding"
+                android:text="Instructions step.........."
+                android:textStyle="bold" />
+        </ScrollView>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

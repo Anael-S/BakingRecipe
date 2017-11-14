@@ -34,6 +34,8 @@ public class RecipeFragment extends Fragment {
     public static final String KEY_INTENT_STEP_LIST = "keyIntentStepList";
     public static final String KEY_INTENT_RECIPE_NAME = "keyIntentRecipeName";
     public static final String KEY_INTENT_POSITION_INGREDIENT_LIST = "keyIntentPositionIngredientList";
+    public static final String KEY_INTENT_POSITION_STEP_LIST = "keyIntentPositionStepList";
+
 
 
     //UI
@@ -46,6 +48,7 @@ public class RecipeFragment extends Fragment {
     StepAdapter mStepAdapter;
 
     int positionIngredientList = 0;
+    int positionStepList = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +69,7 @@ public class RecipeFragment extends Fragment {
             mRecipe = currentBundle.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
             mRecipeList = currentBundle.getParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE);
             positionIngredientList = currentBundle.getInt(KEY_INTENT_POSITION_INGREDIENT_LIST);
+            positionStepList = currentBundle.getInt(KEY_INTENT_POSITION_STEP_LIST);
         }
 
         //UI
@@ -83,6 +87,7 @@ public class RecipeFragment extends Fragment {
         outState.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
         if (recyclerViewIngredientsRecipes != null) {
             outState.putInt(KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
+            outState.putInt(KEY_INTENT_POSITION_STEP_LIST, positionStepList);
         }
         super.onSaveInstanceState(outState);
     }
@@ -104,7 +109,6 @@ public class RecipeFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                //We update the position of our scrollview
                 LinearLayoutManager myLayoutManager = (LinearLayoutManager) recyclerViewIngredientsRecipes.getLayoutManager();
                 positionIngredientList = myLayoutManager.findLastCompletelyVisibleItemPosition();
             }
@@ -142,9 +146,22 @@ public class RecipeFragment extends Fragment {
             mStepAdapter.setListStep(new ArrayList<>(mRecipe.getSteps()));
             mStepAdapter.notifyDataSetChanged();
         }
+        recyclerViewStepRecipes.scrollToPosition(positionStepList);
+        recyclerViewStepRecipes.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager myLayoutManager = (LinearLayoutManager) recyclerViewStepRecipes.getLayoutManager();
+                positionStepList = myLayoutManager.findLastCompletelyVisibleItemPosition();
+            }
+        });
     }
 
     public int getPositionIngredientList() {
         return positionIngredientList;
+    }
+
+    public int getPositionStepList() {
+        return positionStepList;
     }
 }

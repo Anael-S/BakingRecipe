@@ -1,12 +1,14 @@
 package anaels.com.bakingrecipe;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,8 @@ public class StepActivity extends AppCompatActivity {
     ViewPager pagerDetailStep;
     @BindView(R.id.tabDots)
     TabLayout tabDots;
+    @BindView(R.id.footerView)
+    RelativeLayout footerView;
 
 
     @Override
@@ -71,7 +75,12 @@ public class StepActivity extends AppCompatActivity {
         updateActionBar();
 
         //Footer
-        updateFooter();
+        if (shouldDisplayVideoFullMode()) {
+            footerView.setVisibility(View.GONE);
+        } else {
+            footerView.setVisibility(View.VISIBLE);
+            updateFooter();
+        }
 
         layoutPreviousStep.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,8 +102,23 @@ public class StepActivity extends AppCompatActivity {
         pagerDetailStep.setAdapter(mPagerAdapter);
         pagerDetailStep.setPageTransformer(false, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
         pagerDetailStep.setOffscreenPageLimit(mStepList.size());
+        if (shouldDisplayVideoFullMode()) {
+            tabDots.setVisibility(View.GONE);
+        } else {
+            tabDots.setVisibility(View.VISIBLE);
+        }
         tabDots.setupWithViewPager(pagerDetailStep, true);
+        pagerDetailStep.setCurrentItem(mStep.getId());
 
+    }
+
+    private boolean shouldDisplayVideoFullMode() {
+        boolean should = false;
+        if (!getResources().getBoolean(R.bool.isTablet) &&
+                getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            should = true;
+        }
+        return should;
     }
 
     private void updateFooter() {
@@ -114,17 +138,12 @@ public class StepActivity extends AppCompatActivity {
         pagerDetailStep.setCurrentItem(newPosStep);
         mStep = mStepList.get(newPosStep);
         updateFooter();
-        updateActionBar();
     }
 
-    private void updateActionBar(){
+    private void updateActionBar() {
         if (mStep != null) {
             if (getSupportActionBar() != null) {
-                if (mStep.getId() != 0) {
-                    getSupportActionBar().setTitle(getString(R.string.step_separator, mRecipeName, mStep.getId()));
-                } else {
-                    getSupportActionBar().setTitle(getString(R.string.recipe_name_separator, mRecipeName));
-                }
+                getSupportActionBar().setTitle(mRecipeName);
             }
         }
     }

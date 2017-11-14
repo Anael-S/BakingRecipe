@@ -34,6 +34,7 @@ public class RecipeActivity extends AppCompatActivity {
 
     RecipeFragment fragmentRecipe;
     int positionIngredientList;
+    int positionStepList;
 
 
     @Override
@@ -43,6 +44,7 @@ public class RecipeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
         positionIngredientList = 0;
+        positionStepList= 0;
 
         mRecipe = getIntent().getParcelableExtra(HomeActivity.KEY_INTENT_RECIPE);
         mRecipeList = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_RECIPE);
@@ -50,6 +52,7 @@ public class RecipeActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
             positionIngredientList =  savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST);
+            positionStepList =  savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST);
         }
 
         //UI
@@ -64,6 +67,7 @@ public class RecipeActivity extends AppCompatActivity {
         bundle.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
         bundle.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
         bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
+        bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST, positionStepList);
         fragmentRecipe.setArguments(bundle);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentRecipe, fragmentRecipe).commit();
@@ -90,6 +94,7 @@ public class RecipeActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
         outState.putInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, fragmentRecipe.getPositionIngredientList());
+        outState.putInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST, fragmentRecipe.getPositionStepList());
         super.onSaveInstanceState(outState);
     }
 

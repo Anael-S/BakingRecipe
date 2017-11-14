@@ -52,7 +52,7 @@ public class StepFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_detail_step_recipe, container, false);
+                R.layout.fragment_step, container, false);
         ButterKnife.bind(this, rootView);
 
         mediaDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "mediaPlayerBakingRecipe"), BANDWIDTH_METER);
