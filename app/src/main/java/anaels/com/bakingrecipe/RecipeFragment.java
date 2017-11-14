@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import anaels.com.bakingrecipe.adapter.RecipeIngredientAdapter;
-import anaels.com.bakingrecipe.adapter.RecipeStepAdapter;
+import anaels.com.bakingrecipe.adapter.IngredientAdapter;
+import anaels.com.bakingrecipe.adapter.StepAdapter;
 import anaels.com.bakingrecipe.api.model.Recipe;
 import anaels.com.bakingrecipe.api.model.Step;
 import butterknife.BindView;
@@ -42,8 +42,8 @@ public class RecipeFragment extends Fragment {
     @BindView(R.id.recyclerViewStepRecipes)
     RecyclerView recyclerViewStepRecipes;
 
-    RecipeIngredientAdapter mRecipeIngredientAdapter;
-    RecipeStepAdapter mRecipeStepAdapter;
+    IngredientAdapter mIngredientAdapter;
+    StepAdapter mStepAdapter;
 
     int positionIngredientList = 0;
 
@@ -93,12 +93,12 @@ public class RecipeFragment extends Fragment {
      */
     private void initRecyclerViewIngredient() {
         recyclerViewIngredientsRecipes.setLayoutManager(new LinearLayoutManager(getActivity()));
-        if (mRecipeIngredientAdapter == null) {
-            mRecipeIngredientAdapter = new RecipeIngredientAdapter(getActivity(), new ArrayList<>(mRecipe.getIngredients()));
-            recyclerViewIngredientsRecipes.setAdapter(mRecipeIngredientAdapter);
+        if (mIngredientAdapter == null) {
+            mIngredientAdapter = new IngredientAdapter(getActivity(), new ArrayList<>(mRecipe.getIngredients()));
+            recyclerViewIngredientsRecipes.setAdapter(mIngredientAdapter);
         } else {
-            mRecipeIngredientAdapter.setListIngredient(new ArrayList<>(mRecipe.getIngredients()));
-            mRecipeIngredientAdapter.notifyDataSetChanged();
+            mIngredientAdapter.setListIngredient(new ArrayList<>(mRecipe.getIngredients()));
+            mIngredientAdapter.notifyDataSetChanged();
         }
         recyclerViewIngredientsRecipes.scrollToPosition(positionIngredientList);
         recyclerViewIngredientsRecipes.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -117,8 +117,8 @@ public class RecipeFragment extends Fragment {
      */
     private void initRecyclerViewStep() {
         recyclerViewStepRecipes.setLayoutManager(new LinearLayoutManager(getActivity()));
-        if (mRecipeStepAdapter == null) {
-            mRecipeStepAdapter = new RecipeStepAdapter(getActivity(), new ArrayList<>(mRecipe.getSteps()), new RecipeStepAdapter.OnItemClickListener() {
+        if (mStepAdapter == null) {
+            mStepAdapter = new StepAdapter(getActivity(), new ArrayList<>(mRecipe.getSteps()), new StepAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(Step item) {
                     if (getActivity().getResources().getBoolean(R.bool.isTablet)) {
@@ -138,10 +138,10 @@ public class RecipeFragment extends Fragment {
                     }
                 }
             });
-            recyclerViewStepRecipes.setAdapter(mRecipeStepAdapter);
+            recyclerViewStepRecipes.setAdapter(mStepAdapter);
         } else {
-            mRecipeStepAdapter.setListStep(new ArrayList<>(mRecipe.getSteps()));
-            mRecipeStepAdapter.notifyDataSetChanged();
+            mStepAdapter.setListStep(new ArrayList<>(mRecipe.getSteps()));
+            mStepAdapter.notifyDataSetChanged();
         }
     }
 

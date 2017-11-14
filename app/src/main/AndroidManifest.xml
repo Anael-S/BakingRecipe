@@ -20,13 +20,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecipeActivity"
-            android:theme="@style/RecipeTheme">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity android:name=".StepActivity"
-            android:theme="@style/RecipeTheme">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

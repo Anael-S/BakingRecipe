@@ -16,18 +16,18 @@ import anaels.com.bakingrecipe.helper.StepHelper;
 /**
  * Display the ingredient on recipe activity
  */
-public class RecipeIngredientAdapter extends RecyclerView.Adapter<RecipeIngredientAdapter.ViewHolder> {
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
     private ArrayList<Ingredient> listIngredient;
     private Activity mActivity;
 
 
-    public RecipeIngredientAdapter(Activity activity, ArrayList<Ingredient> listIngredient) {
+    public IngredientAdapter(Activity activity, ArrayList<Ingredient> listIngredient) {
         this.mActivity = activity;
         this.listIngredient = listIngredient;
     }
 
     @Override
-    public RecipeIngredientAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public IngredientAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_ingredient, viewGroup, false);
         return new ViewHolder(view);
     }

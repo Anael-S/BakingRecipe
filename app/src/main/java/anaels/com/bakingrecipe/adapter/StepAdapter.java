@@ -17,7 +17,7 @@ import anaels.com.bakingrecipe.helper.StepHelper;
 /**
  * Display the Step on recipe activity
  */
-public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.ViewHolder> {
+public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
     private ArrayList<Step> listStep;
     private Activity mActivity;
     private final OnItemClickListener listener;
@@ -29,7 +29,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
         void onItemClick(Step item);
     }
 
-    public RecipeStepAdapter(Activity activity, ArrayList<Step> listStep, OnItemClickListener listener) {
+    public StepAdapter(Activity activity, ArrayList<Step> listStep, OnItemClickListener listener) {
         this.mActivity = activity;
         this.listStep = listStep;
         this.listener = listener;
@@ -37,18 +37,20 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
     }
 
     @Override
-    public RecipeStepAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public StepAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_step, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        //Background
-        if (listStep.get(i).isSelected()) {
-            viewHolder.cardViewIngredientsRecipes.setBackgroundResource(R.drawable.card_highlighted);
-        } else {
-            viewHolder.cardViewIngredientsRecipes.setBackgroundResource(R.drawable.card_default);
+        //Background - we dont highlight on mobile
+        if (mActivity.getResources().getBoolean(R.bool.isTablet)) {
+            if (listStep.get(i).isSelected()) {
+                viewHolder.cardViewIngredientsRecipes.setBackgroundResource(R.drawable.card_highlighted);
+            } else {
+                viewHolder.cardViewIngredientsRecipes.setBackgroundResource(R.drawable.card_default);
+            }
         }
         //Text
         //If this is the introduction step, we dont display the step number
