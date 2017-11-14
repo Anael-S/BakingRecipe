@@ -30,7 +30,9 @@ public class Ingredient implements Parcelable {
     public String getMeasure() {
         if (measure.equalsIgnoreCase("g")){
             return "gram";
-        }else {
+        } else  if (measure.equalsIgnoreCase("k")){
+            return "kilo";
+        } else{
             return measure;
         }
     }

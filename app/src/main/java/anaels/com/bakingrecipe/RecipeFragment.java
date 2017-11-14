@@ -53,7 +53,6 @@ public class RecipeFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, rootView);
-        Log.i("//RM","onCreateView RecipeFragment called twice???? //RM TODO FIX THIS");
         mContext = getContext();
 
         Bundle currentBundle = null;

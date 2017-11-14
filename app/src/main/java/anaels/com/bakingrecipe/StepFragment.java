@@ -17,11 +17,9 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.upstream.TransferListener;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
@@ -47,7 +45,7 @@ public class StepFragment extends Fragment {
 
     private DataSource.Factory mediaDataSourceFactory;
     private DefaultTrackSelector trackSelector;
-    private BandwidthMeter bandwidthMeter;
+    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
 
     @Override
@@ -55,10 +53,9 @@ public class StepFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_detail_step_recipe, container, false);
-        ButterKnife.bind(this,rootView);
+        ButterKnife.bind(this, rootView);
 
-        bandwidthMeter = new DefaultBandwidthMeter();
-        mediaDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "mediaPlayerBakingRecipe"), (TransferListener<? super DataSource>) bandwidthMeter);
+        mediaDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "mediaPlayerBakingRecipe"), BANDWIDTH_METER);
 
 
         Bundle bundle = this.getArguments();
@@ -88,16 +85,29 @@ public class StepFragment extends Fragment {
     }
 
     private void initializePlayer() {
-        videoPlayer.requestFocus();
-        TrackSelection.Factory videoTrackSelectionFactory =
-                new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
-        videoPlayer.setPlayer(player);
-        player.setPlayWhenReady(false);
-        MediaSource mediaSource = new ExtractorMediaSource(Uri.parse(mStep.getVideoURL()),
-                mediaDataSourceFactory, new DefaultExtractorsFactory(), null, null);
-        player.prepare(mediaSource);
+        //if the URL is valid
+        if (mStep.getVideoURL() != null && !mStep.getVideoURL().isEmpty()){
+            Uri lVideoURI=null;
+            try{
+                lVideoURI = Uri.parse(mStep.getVideoURL());
+            } catch (Exception e){
+                lVideoURI=null;
+            }
+            if (lVideoURI != null){ // then we init the player
+                videoPlayer.requestFocus();
+                TrackSelection.Factory videoTrackSelectionFactory =
+                        new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
+                trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+                player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
+                videoPlayer.setPlayer(player);
+                player.setPlayWhenReady(false);
+
+                MediaSource mediaSource = new ExtractorMediaSource(lVideoURI,
+                        mediaDataSourceFactory, new DefaultExtractorsFactory(), null, null);
+                player.prepare(mediaSource);
+            }
+        }
+
     }
 
     private void releasePlayer() {

@@ -55,7 +55,9 @@ public class StepActivity extends AppCompatActivity {
         }
 
         //UI
-        initUI();
+        if (mStepList != null) {
+            initUI();
+        }
     }
 
     @Override
@@ -90,6 +92,7 @@ public class StepActivity extends AppCompatActivity {
         mPagerAdapter = new StepPagerAdapter(getSupportFragmentManager(), mStepList);
         pagerDetailStep.setAdapter(mPagerAdapter);
         pagerDetailStep.setPageTransformer(false, new ReaderViewPagerTransformer(ReaderViewPagerTransformer.TransformType.FLOW));
+        pagerDetailStep.setOffscreenPageLimit(mStepList.size());
         tabDots.setupWithViewPager(pagerDetailStep, true);
 
     }
