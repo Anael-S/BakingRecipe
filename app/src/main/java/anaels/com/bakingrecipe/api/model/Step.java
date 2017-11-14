@@ -52,6 +52,9 @@ public class Step implements Parcelable {
     }
 
     public String getDescription() {
+        if (description != null){
+            description =description.replaceAll("¿½","°");
+        }
         return description;
     }
 
