@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.api.model.Step;
+import anaels.com.bakingrecipe.helper.InternetConnectionHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -78,7 +79,7 @@ public class StepFragment extends Fragment {
         super.onStart();
         imageStepImageView.setVisibility(View.GONE);
         //If we actually got a video
-        if (mStep.getVideoURL() != null && !mStep.getVideoURL().isEmpty()) {
+        if (mStep.getVideoURL() != null && !mStep.getVideoURL().isEmpty() && InternetConnectionHelper.isNetworkAvailable(getContext())) {
             initializePlayer();
             if (player != null) {
                 player.seekTo(100);
