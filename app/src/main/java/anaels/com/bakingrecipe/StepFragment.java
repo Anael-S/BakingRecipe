@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -21,6 +22,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,8 @@ public class StepFragment extends Fragment {
     SimpleExoPlayerView videoPlayer;
     @BindView(R.id.instructionTextView)
     TextView instructionTextView;
+    @BindView(R.id.imageStepImageView)
+    ImageView imageStepImageView;
 
     protected SimpleExoPlayer player;
 
@@ -72,6 +76,7 @@ public class StepFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        imageStepImageView.setVisibility(View.GONE);
         //If we actually got a video
         if (mStep.getVideoURL() != null && !mStep.getVideoURL().isEmpty()) {
             initializePlayer();
@@ -81,6 +86,11 @@ public class StepFragment extends Fragment {
             videoPlayer.setVisibility(View.VISIBLE);
         } else {
             videoPlayer.setVisibility(View.GONE);
+            //Image
+            if (mStep.getThumbnailURL() != null && !mStep.getThumbnailURL().isEmpty()) {
+                imageStepImageView.setVisibility(View.VISIBLE);
+                Picasso.with(getContext()).load(mStep.getThumbnailURL()).error(R.drawable.placeholder_recipe).into(imageStepImageView);
+            }
         }
     }
 
