@@ -74,7 +74,6 @@
                     android:id="@+id/recyclerViewStepRecipes"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/textViewInstructions"
                     android:layout_marginTop="@dimen/extra_extra_small_padding"
                     android:scrollbars="vertical" />
 
