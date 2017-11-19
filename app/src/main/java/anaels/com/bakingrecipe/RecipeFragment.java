@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,8 +46,8 @@ public class RecipeFragment extends Fragment {
     IngredientAdapter mIngredientAdapter;
     StepAdapter mStepAdapter;
 
-    int positionIngredientList = 0;
-    int positionStepList = 0;
+    Parcelable positionIngredientList;
+    Parcelable positionStepList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,8 +67,8 @@ public class RecipeFragment extends Fragment {
         if (currentBundle != null) {
             mRecipe = currentBundle.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
             mRecipeList = currentBundle.getParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE);
-            positionIngredientList = currentBundle.getInt(KEY_INTENT_POSITION_INGREDIENT_LIST);
-            positionStepList = currentBundle.getInt(KEY_INTENT_POSITION_STEP_LIST);
+            positionIngredientList = currentBundle.getParcelable(KEY_INTENT_POSITION_INGREDIENT_LIST);
+            positionStepList = currentBundle.getParcelable(KEY_INTENT_POSITION_STEP_LIST);
         }
 
         //UI
@@ -86,8 +85,8 @@ public class RecipeFragment extends Fragment {
         outState.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
         outState.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
         if (recyclerViewIngredientsRecipes != null) {
-            outState.putInt(KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
-            outState.putInt(KEY_INTENT_POSITION_STEP_LIST, positionStepList);
+            outState.putParcelable(KEY_INTENT_POSITION_INGREDIENT_LIST, recyclerViewIngredientsRecipes.getLayoutManager().onSaveInstanceState());
+            outState.putParcelable(KEY_INTENT_POSITION_STEP_LIST, recyclerViewStepRecipes.getLayoutManager().onSaveInstanceState());
         }
         super.onSaveInstanceState(outState);
     }
@@ -104,13 +103,13 @@ public class RecipeFragment extends Fragment {
             mIngredientAdapter.setListIngredient(new ArrayList<>(mRecipe.getIngredients()));
             mIngredientAdapter.notifyDataSetChanged();
         }
-        recyclerViewIngredientsRecipes.scrollToPosition(positionIngredientList);
+        recyclerViewIngredientsRecipes.getLayoutManager().onRestoreInstanceState(positionIngredientList);
         recyclerViewIngredientsRecipes.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 LinearLayoutManager myLayoutManager = (LinearLayoutManager) recyclerViewIngredientsRecipes.getLayoutManager();
-                positionIngredientList = myLayoutManager.findLastCompletelyVisibleItemPosition();
+                positionIngredientList = myLayoutManager.onSaveInstanceState();
             }
         });
     }
@@ -146,22 +145,14 @@ public class RecipeFragment extends Fragment {
             mStepAdapter.setListStep(new ArrayList<>(mRecipe.getSteps()));
             mStepAdapter.notifyDataSetChanged();
         }
-        recyclerViewStepRecipes.scrollToPosition(positionStepList);
+        recyclerViewStepRecipes.getLayoutManager().onRestoreInstanceState(positionStepList);
         recyclerViewStepRecipes.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 LinearLayoutManager myLayoutManager = (LinearLayoutManager) recyclerViewStepRecipes.getLayoutManager();
-                positionStepList = myLayoutManager.findLastCompletelyVisibleItemPosition();
+                positionStepList = myLayoutManager.onSaveInstanceState();
             }
         });
-    }
-
-    public int getPositionIngredientList() {
-        return positionIngredientList;
-    }
-
-    public int getPositionStepList() {
-        return positionStepList;
     }
 }

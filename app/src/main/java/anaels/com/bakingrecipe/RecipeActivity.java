@@ -16,7 +16,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.api.model.Recipe;
-import anaels.com.bakingrecipe.api.model.Step;
 import anaels.com.bakingrecipe.helper.StepHelper;
 import anaels.com.bakingrecipe.widget.RecipeWidgetProvider;
 import butterknife.BindView;
@@ -69,24 +68,26 @@ public class RecipeActivity extends AppCompatActivity {
             }
         }
 
-        fragmentRecipe = new RecipeFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
-        bundle.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
-        bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
-        bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST, positionStepList);
-        fragmentRecipe.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentRecipe, fragmentRecipe).commit();
+        //To avoid the double onCreateView claa, we check if this is just a screen roation
+        if (savedInstanceState == null) {
+            fragmentRecipe = new RecipeFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
+            bundle.putParcelableArrayList(HomeActivity.KEY_INTENT_LIST_RECIPE, mRecipeList);
+            bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, positionIngredientList);
+            bundle.putInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST, positionStepList);
+            fragmentRecipe.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentRecipe, fragmentRecipe).commit();
+        }
 
-        int lastSelectedStep = StepHelper.getSelectStepPosition(new ArrayList<>(mRecipe.getSteps()));
-
-        //If we're on a tablet
+        //If we're on a tablet && its not a screen rotation
         if (fragmentStep != null && savedInstanceState == null) {
             //We select the first step
+            int lastSelectedStep = StepHelper.getSelectStepPosition(new ArrayList<>(mRecipe.getSteps()));
             mRecipe.getSteps().get(lastSelectedStep).setSelected(true);
             StepFragment fragmentStep = new StepFragment();
-            bundle = new Bundle();
+            Bundle bundle = new Bundle();
             bundle.putParcelable(RecipeActivity.KEY_INTENT_STEP, mRecipe.getSteps().get(0));
             bundle.putParcelableArrayList(RecipeActivity.KEY_INTENT_STEP_LIST, new ArrayList<Parcelable>(mRecipe.getSteps()));
             fragmentStep.setArguments(bundle);
@@ -122,8 +123,6 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
-        outState.putInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST, fragmentRecipe.getPositionIngredientList());
-        outState.putInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST, fragmentRecipe.getPositionStepList());
         super.onSaveInstanceState(outState);
     }
 
