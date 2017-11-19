@@ -1,17 +1,24 @@
 package anaels.com.bakingrecipe;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.api.model.Recipe;
 import anaels.com.bakingrecipe.api.model.Step;
 import anaels.com.bakingrecipe.helper.StepHelper;
+import anaels.com.bakingrecipe.widget.RecipeWidgetProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -88,6 +95,30 @@ public class RecipeActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_to_widget_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.addToWidgetButton) {
+            //We send the recipe to the widget
+            Toast.makeText(mContext, R.string.added_to_widget, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(mContext, RecipeWidgetProvider.class);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            intent.putExtra(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
+            int[] ids = AppWidgetManager.getInstance(mContext).getAppWidgetIds(new ComponentName(mContext, RecipeWidgetProvider.class));
+            if(ids != null && ids.length > 0) {
+                intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+                mContext.sendBroadcast(intent);
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

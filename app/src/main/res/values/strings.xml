@@ -19,4 +19,9 @@
     <string name="recipe_name_separator">%1$s - Introduction</string>
 
     <string name="unknown_error">An unknown error occured, try again.</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+    <string name="choose_recipe">Please select a recipe and click on the button</string>
+    <string name="added_to_widget">Added to widget</string>
 </resources>
