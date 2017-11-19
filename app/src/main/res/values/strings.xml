@@ -15,6 +15,7 @@
     <string name="ingredients">Ingredients:</string>
 
     <string name="retry">retry</string>
+    <string name="no_internet">No internet connection.</string>
 
     <string name="recipe_name_separator">%1$s - Introduction</string>
 

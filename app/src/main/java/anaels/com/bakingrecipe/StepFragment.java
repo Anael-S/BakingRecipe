@@ -51,6 +51,10 @@ public class StepFragment extends Fragment {
     private DataSource.Factory mediaDataSourceFactory;
     private DefaultTrackSelector trackSelector;
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
+    private long positionPlayer = 100;
+
+    private static final String KEY_SELECTED_POSITION_PLAYER = "keyPosPlayer";
+    private boolean autoPlay = false;
 
 
     @Override
@@ -61,6 +65,13 @@ public class StepFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         mediaDataSourceFactory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), "mediaPlayerBakingRecipe"), BANDWIDTH_METER);
+
+        if (savedInstanceState != null) {
+            positionPlayer = savedInstanceState.getLong(KEY_SELECTED_POSITION_PLAYER, 100);
+            autoPlay = true;
+        } else {
+            autoPlay = false;
+        }
 
 
         Bundle bundle = this.getArguments();
@@ -75,15 +86,18 @@ public class StepFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(KEY_SELECTED_POSITION_PLAYER, positionPlayer);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         imageStepImageView.setVisibility(View.GONE);
         //If we actually got a video
         if (mStep.getVideoURL() != null && !mStep.getVideoURL().isEmpty() && InternetConnectionHelper.isNetworkAvailable(getContext())) {
             initializePlayer();
-            if (player != null) {
-                player.seekTo(100);
-            }
             videoPlayer.setVisibility(View.VISIBLE);
         } else {
             videoPlayer.setVisibility(View.GONE);
@@ -97,25 +111,26 @@ public class StepFragment extends Fragment {
 
     private void initializePlayer() {
         //if the URL is valid
-        if (mStep.getVideoURL() != null && !mStep.getVideoURL().isEmpty()){
-            Uri lVideoURI=null;
-            try{
+        if (mStep.getVideoURL() != null && !mStep.getVideoURL().isEmpty()) {
+            Uri lVideoURI;
+            try {
                 lVideoURI = Uri.parse(mStep.getVideoURL());
-            } catch (Exception e){
-                lVideoURI=null;
+            } catch (Exception e) {
+                lVideoURI = null;
             }
-            if (lVideoURI != null){ // then we init the player
+            if (lVideoURI != null) { // then we init the player
                 videoPlayer.requestFocus();
                 TrackSelection.Factory videoTrackSelectionFactory =
                         new AdaptiveTrackSelection.Factory(BANDWIDTH_METER);
                 trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
                 player = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
                 videoPlayer.setPlayer(player);
-                player.setPlayWhenReady(false);
+                player.setPlayWhenReady(autoPlay);
 
                 MediaSource mediaSource = new ExtractorMediaSource(lVideoURI,
                         mediaDataSourceFactory, new DefaultExtractorsFactory(), null, null);
                 player.prepare(mediaSource);
+                player.seekTo(positionPlayer);
             }
         }
 
@@ -123,6 +138,7 @@ public class StepFragment extends Fragment {
 
     private void releasePlayer() {
         if (player != null) {
+            positionPlayer = player.getCurrentPosition();
             player.release();
             player = null;
             trackSelector = null;
@@ -134,6 +150,8 @@ public class StepFragment extends Fragment {
         super.onResume();
         if (player == null) {
             initializePlayer();
+        } else {
+            player.seekTo(positionPlayer);
         }
     }
 

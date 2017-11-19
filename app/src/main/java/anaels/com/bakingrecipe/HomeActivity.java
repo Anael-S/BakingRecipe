@@ -14,17 +14,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.google.gson.reflect.TypeToken;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import anaels.com.bakingrecipe.adapter.RecipeAdapter;
 import anaels.com.bakingrecipe.api.NetworkService;
 import anaels.com.bakingrecipe.api.model.Recipe;
-import anaels.com.bakingrecipe.helper.AssetsHelper;
 import anaels.com.bakingrecipe.helper.InternetConnectionHelper;
-import anaels.com.bakingrecipe.helper.SerializeHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -88,28 +83,9 @@ public class HomeActivity extends AppCompatActivity {
             }, new NetworkService.OnError() {
                 @Override
                 public void onError() {
-                    loadRecipeFromLocalFile();
+                    Toast.makeText(mContext,getString(R.string.no_internet),Toast.LENGTH_LONG).show();
                 }
             });
-        } else {
-            //otherwise we fetch them locally
-            loadRecipeFromLocalFile();
-        }
-    }
-
-    /**
-     * Load the recipe from the local json file
-     */
-    private void loadRecipeFromLocalFile() {
-        String jsonRecipes = AssetsHelper.readJsonFileFromAssets(AssetsHelper.PATH_FILE_RECIPES, mContext);
-        Type returnType = new TypeToken<ArrayList<Recipe>>() {
-        }.getType();
-        ArrayList<Recipe> recipeList = SerializeHelper.deserializeJson(jsonRecipes, returnType);
-        if (recipeList != null && !recipeList.isEmpty()) {
-            mRecipeList = recipeList;
-            initRecyclerView();
-        } else {
-            Toast.makeText(mContext, R.string.error_fetch_recipe, Toast.LENGTH_SHORT).show();
         }
     }
 

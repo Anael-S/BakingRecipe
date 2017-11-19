@@ -82,7 +82,7 @@ public class RecipeActivity extends AppCompatActivity {
         int lastSelectedStep = StepHelper.getSelectStepPosition(new ArrayList<>(mRecipe.getSteps()));
 
         //If we're on a tablet
-        if (fragmentStep != null) {
+        if (fragmentStep != null && savedInstanceState == null) {
             //We select the first step
             mRecipe.getSteps().get(lastSelectedStep).setSelected(true);
             StepFragment fragmentStep = new StepFragment();
@@ -93,8 +93,6 @@ public class RecipeActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentStep, fragmentStep).commit();
         }
-
-
     }
 
     @Override
