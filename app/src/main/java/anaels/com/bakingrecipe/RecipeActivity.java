@@ -50,20 +50,21 @@ public class RecipeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext = this;
         positionIngredientList = 0;
-        positionStepList= 0;
+        positionStepList = 0;
 
         mRecipe = getIntent().getParcelableExtra(HomeActivity.KEY_INTENT_RECIPE);
         mRecipeList = getIntent().getParcelableArrayListExtra(HomeActivity.KEY_INTENT_LIST_RECIPE);
 
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(HomeActivity.KEY_INTENT_RECIPE);
-            positionIngredientList =  savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST);
-            positionStepList =  savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST);
+            positionIngredientList = savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_INGREDIENT_LIST);
+            positionStepList = savedInstanceState.getInt(RecipeFragment.KEY_INTENT_POSITION_STEP_LIST);
         }
 
         //UI
         if (mRecipe != null) {
             if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setTitle(mRecipe.getName());
             }
         }
@@ -112,10 +113,13 @@ public class RecipeActivity extends AppCompatActivity {
             intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
             intent.putExtra(HomeActivity.KEY_INTENT_RECIPE, mRecipe);
             int[] ids = AppWidgetManager.getInstance(mContext).getAppWidgetIds(new ComponentName(mContext, RecipeWidgetProvider.class));
-            if(ids != null && ids.length > 0) {
+            if (ids != null && ids.length > 0) {
                 intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                 mContext.sendBroadcast(intent);
             }
+        } else if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

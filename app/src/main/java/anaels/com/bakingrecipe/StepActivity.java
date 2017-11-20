@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -53,6 +54,10 @@ public class StepActivity extends AppCompatActivity {
         mStep = getIntent().getParcelableExtra(RecipeActivity.KEY_INTENT_STEP);
         mRecipeName = getIntent().getStringExtra(RecipeActivity.KEY_INTENT_RECIPE_NAME);
         mStepList = getIntent().getParcelableArrayListExtra(RecipeActivity.KEY_INTENT_STEP_LIST);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         if (savedInstanceState != null && mStep == null) {
             mStep = savedInstanceState.getParcelable(RecipeActivity.KEY_INTENT_STEP);
@@ -110,6 +115,16 @@ public class StepActivity extends AppCompatActivity {
         tabDots.setupWithViewPager(pagerDetailStep, true);
         pagerDetailStep.setCurrentItem(mStep.getId());
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean shouldDisplayVideoFullMode() {
